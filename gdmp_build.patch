@@ -1,0 +1,12 @@
+--- /third_party/GDMP/build.py	2024-07-04 15:45:45.285994665 +0200
++++ /third_party/GDMP/build.py	2024-07-04 15:41:05.697498599 +0200
+@@ -30,6 +30,9 @@
+             "--copt=-DMESA_EGL_NO_X11_HEADERS",
+             "--copt=-DEGL_NO_X11",
+             "--copt=-fPIC",
++            "--copt=-I/app/include/opencv4",
++            "--copt=-L/app/lib",
++            "--linkopt=-Wl,-L,/app/lib",
+         ],
+         "win32": [
+             "--define=MEDIAPIPE_DISABLE_GPU=1",
