@@ -1,12 +1,12 @@
-app-id: com.digitotter.vtube_project
-# base: org.godotengine.godot.BaseApp
-# base-version: "3.5-23.08"
+app-id: io.github.digitotter.vtube_project.staging
 runtime: org.freedesktop.Platform
 runtime-version: "23.08"
 sdk: org.freedesktop.Sdk
 sdk-extensions: [ "org.freedesktop.Sdk.Extension.rust-nightly", "org.freedesktop.Sdk.Extension.llvm18" ]
 command: vtube_project.sh
-#rename-icon: icon
+
+rename-icon: icon
+rename-desktop-file: vtube_project.desktop
 
 build-options:
   append-path: /usr/lib/sdk/rust-nightly/bin
@@ -42,7 +42,7 @@ modules:
         dest-filename: opencv-4-10.tar.gz
     build-commands:
       - cmake -GNinja -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/app
-          -DBUILD_JAVA=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DBUILD_opencv_apps=ON -DWITH_VULKAN=ON -DWITH_OPENGL=ON
+          -DBUILD_JAVA=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DBUILD_opencv_apps=OFF -DWITH_VULKAN=ON -DWITH_OPENGL=ON
       - cmake --build build
       # Make OpenCV available to GDMP build in vtube_project module
       - cmake --install build --strip
@@ -87,14 +87,37 @@ modules:
       - type: file
         path: vtube_project.sh
         dest: bin/
+      - type: file
+        path: icon.svg
+        dest: bin/
+      - type: file
+        path: icon.png
+        dest: bin/
+      - type: file
+        path: vtube_project.desktop
+        dest: bin/
 
     build-commands:
       - mkdir -p /app/vtube_project
       # vtube_project data
-      - install -t /app/vtube_project/ ./bin/vtube_project.pck
+      - install ./bin/vtube_project.pck -t /app/vtube_project/
       # Startup script
-      - install -t /app/bin/ ./bin/vtube_project.sh
+      - install ./bin/vtube_project.sh -t /app/bin/
+      # Icon and desktop
+      - install -D ./bin/icon.svg /app/share/icons/scalable/apps/${FLATPAK_ID}.svg
+      - install -D ./bin/icon.png -t /app/share/icons/hicolor/256x256/apps/
+      - install -D ./bin/vtube_project.desktop -t /app/share/applications/
 
 cleanup:
+  # Remove generally dev unused files
+  - /include
+  - /lib/cmake
+  - /lib/debug
+  - /cache
   # Cleanup opencv dev files
   - /**/opencv4
+  - /bin/*opencv*
+  # Cleanup scons dev files
+  - /lib/python*
+  - /scons*
+  - /bin/scons*

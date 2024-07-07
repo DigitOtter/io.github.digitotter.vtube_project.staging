@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Vtube Project
+Exec=vtube_project.sh
+Type=Application
+Icon=io.github.digitotter.vtube_project.staging
+Categories=Game
