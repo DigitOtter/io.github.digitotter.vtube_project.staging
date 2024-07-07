@@ -19,6 +19,7 @@ build-options:
 finish-args:
   - --share=ipc
   - --socket=x11
+  - --socket=pulseaudio
   - --filesystem=home
   # For texture sharing
   - --filesystem=/tmp
@@ -87,6 +88,7 @@ modules:
       - type: file
         path: vtube_project.sh
         dest: bin/
+      # Desktop and icon
       - type: file
         path: icon.svg
         dest: bin/
