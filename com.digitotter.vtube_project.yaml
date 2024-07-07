@@ -54,9 +54,9 @@ modules:
     sources:
       - type: git
         url: https://github.com/DigitOtter/vtube-project.git
-        commit: 5a16c2e5e0a4d59ccd3c8fa476a8158f20a8ba0d
+        commit: bf8c086950c33d108bbe58a74dcd1cc5231f9bde
 
-      # Link to opencv
+      # Link GDMP to opencv
       - type: patch
         paths:
           - gdmp_build.patch
@@ -72,7 +72,7 @@ modules:
       # Install libraries
       - find -L addons -name "*.so" -exec install {} /app/lib/ \;
       # Install base godot
-      - install -T third_party/godot/bin/godot.linuxbsd.template_release.x86_64 /app/bin/godot-runner
+      - install -T third_party/godot/bin/godot.linuxbsd.editor.x86_64 /app/bin/godot-runner
 
   # vtube_project data
   - name: vtube_project
@@ -94,5 +94,7 @@ modules:
       - install -t /app/vtube_project/ ./bin/vtube_project.pck
       # Startup script
       - install -t /app/bin/ ./bin/vtube_project.sh
-      # Cleanup unused opencv files
-      #- rm -rf /app/**/opencv4
+
+cleanup:
+  # Cleanup opencv dev files
+  - /**/opencv4
